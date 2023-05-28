@@ -1,0 +1,17 @@
+* {
+	margin: 0px;
+	padding: 0px;
+	border: 1px solid;
+}
+
+body {
+	height: 100vh;
+	display: grid;
+	grid-template-columns: repeat(1fr);
+	grid-template-rows: repeat(1fr);
+	place-content: center;
+}
+
+.container {
+	width: 50%;
+}
