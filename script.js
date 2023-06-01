@@ -17,6 +17,7 @@ const gameBoard = (() => {
 	const rows = 3;
 	const columns = 3;
 	const board = [];
+	let count = 0;
 
 	for (let i = 0; i < rows; i++) {
 		board[i] = [];
@@ -64,6 +65,13 @@ const gameBoard = (() => {
 
 	const printBoard = () => console.log(board);
 
+	const roundCounter = () => {
+  		count += 1;
+  		return count;
+    };
+
+    const getRound = () => count;
+
 	// const updateBoard = (e) => {
 	// 	index = Number(e.target.id);
 	// 	if (e.target.textContent === '') {
@@ -76,7 +84,9 @@ const gameBoard = (() => {
 		getBoard,
 		addMarker,
 		checkBoard,
-		printBoard };
+		printBoard,
+		roundCounter, 
+		getRound };
 })();
 
 const gameController = ((playerOneName = 'Player One', 
@@ -111,9 +121,12 @@ const gameController = ((playerOneName = 'Player One',
 		const column = prompt('Enter column number');
 
 		board.addMarker(row, column);
-
+		board.roundCounter();
+		
 		if (board.checkBoard(board.getBoard())) {
 			console.log(`${getActivePlayer().name} wins!`);
+		} else if (board.getRound() === 9) {
+			console.log('It\'s a tie!');
 		} else {
 			switchPlayerTurn();
 			printNewRound();
