@@ -37,25 +37,21 @@ const gameBoard = (() => {
 		for (let i = 0; i < rows; i++) {
 			if (board[i][0] === board[i][1] && board[i][0] === board[i][2] &&
 				board[i][0] !== '') {
-				console.log('row');
 				winner = true;
 			};
 		};
 		for (let i = 0; i < columns; i++) {
 			if (board[0][i] === board[1][i] && board[0][i] === board[2][i] &&
 				board[0][i] !== '') {
-				console.log('column');
 				winner = true;
 			};
 		};
 		if (board[0][0] === board[1][1] && board[0][0] === board[2][2] && 
 			board[0][0] !== '') {
-			console.log('diag');
 			winner = true;
 			};
 		if (board[0][2] === board[1][1] && board[0][2] === board[2][0] && 
 			board[0][2] !== '') {
-			console.log('diag');
 			winner = true;
 			};					
 		return winner;
@@ -95,6 +91,8 @@ const gameController = ((playerOneName = 'Player One',
 
 	let activePlayer = players[0];
 
+	let winner = null;
+
 	const switchPlayerTurn = () => {
 		activePlayer = activePlayer === players[0] ? players[1] : players[0];
 	};
@@ -115,9 +113,9 @@ const gameController = ((playerOneName = 'Player One',
 			board.roundCounter();
 		
 			if (board.checkBoard(board.getBoard())) {
-				console.log(`${getActivePlayer().name} wins!`);
+				winner = getActivePlayer().name;
 			} else if (board.getRound() === 9) {
-				console.log('It\'s a tie!');
+				winner = 'tie';
 			} else {
 				switchPlayerTurn();
 				// printNewRound();
@@ -127,11 +125,14 @@ const gameController = ((playerOneName = 'Player One',
 
 	}
 
+	const getWinner = () => winner;
+
 	// printNewRound();
 
 	return {
 		playRound,
-		getActivePlayer
+		getActivePlayer,
+		getWinner
 	}
 })();
 
@@ -147,7 +148,13 @@ const displayController = (() => {
 		const gameBoard = board.getBoard();
 		const activePlayer = game.getActivePlayer();
 
-		announcement.textContent = `${activePlayer.name}'s turn`
+		if (game.getWinner() === null) {
+			announcement.textContent = `${activePlayer.name}'s turn`;
+		} else if (game.getWinner() === 'tie') {
+			announcement.textContent = 'It\'s a tie!';
+		} else {
+			announcement.textContent = `${activePlayer.name} wins!`
+		}
 
 		gameBoard.forEach((row) => {
 			row.forEach((cell, index) => {
