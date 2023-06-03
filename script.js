@@ -163,6 +163,12 @@ const displayController = (() => {
 				cell.dataset.row = gameBoard.indexOf(row);
 				cell.dataset.column = index;
 				cell.textContent = gameBoard[cell.dataset.row][cell.dataset.column];
+				if (gameBoard.indexOf(row) === 1) {
+					cell.classList.add('center-row');
+				}
+				if (index === 1) {
+					cell.classList.add('center-column');
+				};
 				container.appendChild(cell);
 			})
 		})

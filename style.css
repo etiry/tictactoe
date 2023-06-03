@@ -1,7 +1,7 @@
 * {
 	margin: 0px;
 	padding: 0px;
-	border: 1px solid;
+/*	border: 1px solid;*/
 }
 
 body {
@@ -10,11 +10,12 @@ body {
 	grid-template-columns: repeat(1fr);
 	grid-template-rows: repeat(1fr);
 	place-content: center;
+	background: #003e49;
 }
 
 .container {
-	width: 300px;
-	height: 300px;
+	width: 450px;
+	height: 450px;
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	grid-template-rows: repeat(3, 1fr);
@@ -22,6 +23,28 @@ body {
 }
 
 .square {
-	width: 100px;
-	height: 100px;
+	width: 150px;
+	height: 150px;
+	border: none;
+	color: #f2f7f9;
+	font-size: 64px;
+	background: #003e49;
+}
+
+.announcement {
+	font-size: 24px;
+	font-family: Helvetica, sans-serif;
+	color: #f2f7f9;
+	place-self: center;
+	margin: 24px;
+}
+
+.center-column {
+	border-left: 3px solid #eba200;
+	border-right: 3px solid #eba200;
+}
+
+.center-row {
+	border-top: 3px solid #eba200;
+	border-bottom: 3px solid #eba200;	
 }
