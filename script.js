@@ -1,7 +1,7 @@
 const square = (() => {
 	let value = '';
 
-	const getMarker = (marker) => {
+	const getMarker = () => {
 		value = marker;
 	}
 
@@ -29,9 +29,7 @@ const gameBoard = (() => {
 	const getBoard = () => board;
 
 	const addMarker = (row, column) => {
-		if (board[row][column] === '') {
-			board[row][column] = gameController.getActivePlayer().token;
-		};
+		board[row][column] = gameController.getActivePlayer().token;
 	};
 
 	const checkBoard = (board) => {
@@ -63,7 +61,7 @@ const gameBoard = (() => {
 		return winner;
 	};
 
-	const printBoard = () => console.log(board);
+	// const printBoard = () => console.log(board);
 
 	const roundCounter = () => {
   		count += 1;
@@ -72,19 +70,11 @@ const gameBoard = (() => {
 
     const getRound = () => count;
 
-	// const updateBoard = (e) => {
-	// 	index = Number(e.target.id);
-	// 	if (e.target.textContent === '') {
-	// 		board[index] = player1.marker;
-	// 		displayController.displayBoard();
-	// 	}
-	// }
-
 	return { 
 		getBoard,
 		addMarker,
 		checkBoard,
-		printBoard,
+		// printBoard,
 		roundCounter, 
 		getRound };
 })();
@@ -111,31 +101,33 @@ const gameController = ((playerOneName = 'Player One',
 
 	const getActivePlayer = () => activePlayer;
 
-	const printNewRound = () => {
-		board.printBoard();
-		console.log(`${getActivePlayer().name}'s turn`)
-	}
+	// const printNewRound = () => {
+	// 	board.printBoard();
+	// 	console.log(`${getActivePlayer().name}'s turn`)
+	// }
 
-	const playRound = () => {
-		const row = prompt('Enter row number');
-		const column = prompt('Enter column number');
+	const playRound = (row, column) => {
+		const playedRow = row;
+		const playedColumn = column;
 
-		board.addMarker(row, column);
-		board.roundCounter();
+		if (board.getBoard()[playedRow][playedColumn] === '') {
+			board.addMarker(playedRow, playedColumn);
+			board.roundCounter();
 		
-		if (board.checkBoard(board.getBoard())) {
-			console.log(`${getActivePlayer().name} wins!`);
-		} else if (board.getRound() === 9) {
-			console.log('It\'s a tie!');
-		} else {
-			switchPlayerTurn();
-			printNewRound();
-			playRound();
+			if (board.checkBoard(board.getBoard())) {
+				console.log(`${getActivePlayer().name} wins!`);
+			} else if (board.getRound() === 9) {
+				console.log('It\'s a tie!');
+			} else {
+				switchPlayerTurn();
+				// printNewRound();
+				// playRound();
+			}
 		}
 
 	}
 
-	printNewRound();
+	// printNewRound();
 
 	return {
 		playRound,
@@ -143,41 +135,44 @@ const gameController = ((playerOneName = 'Player One',
 	}
 })();
 
-// const displayController = (() => {
-// 	const squares = document.querySelectorAll('.square');
+const displayController = (() => {
+	board = gameBoard;
+	game = gameController;
+	const announcement = document.querySelector('.announcement');
+	const container = document.querySelector('.container');
 
-// 	const displayBoard = () => {
-// 		for (i = 0; i < squares.length; i++) {
-// 			squares[i].textContent = gameBoard.board[i];
-// 		};
-// 	};
+	const displayBoard = () => {
+		container.textContent = '';
 
-// 	const playTurn = () => {
-// 		squares.forEach((square) => {
-// 			square.addEventListener('click', gameBoard.updateBoard);
-// 		});
-// 	};
+		const gameBoard = board.getBoard();
+		const activePlayer = game.getActivePlayer();
 
-// 	return { 
-// 		displayBoard,
-// 		playTurn };
-// })();
+		announcement.textContent = `${activePlayer.name}'s turn`
 
-// const player = (marker) => {
-// 	return { marker };
-// };
+		gameBoard.forEach((row) => {
+			row.forEach((cell, index) => {
+				cell = document.createElement('button');
+				cell.classList.add('square');
+				cell.dataset.row = gameBoard.indexOf(row);
+				cell.dataset.column = index;
+				cell.textContent = gameBoard[cell.dataset.row][cell.dataset.column];
+				container.appendChild(cell);
+			})
+		})
+	};
 
-// displayController.displayBoard();
-// displayController.playTurn();
+	const clickHandler = (e) => {
+		const selectedRow = e.target.dataset.row;
+		const selectedCol = e.target.dataset.column;
+		if (!selectedRow || !selectedCol) return;
 
-game = gameController;
+		game.playRound(selectedRow, selectedCol);
+		displayBoard();
+	}
 
-game.playRound();
+	container.addEventListener('click', clickHandler);
 
+	displayBoard();
 
-// create game board
-	// create empty array
-	// link each array item to square
-// when player clicks a square, fill in with their marker
-	// when square is clicked, update appropriate item in array
-	// refresh game board
+})();
+
