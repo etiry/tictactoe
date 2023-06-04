@@ -57,8 +57,6 @@ const gameBoard = (() => {
 		return winner;
 	};
 
-	// const printBoard = () => console.log(board);
-
 	const roundCounter = () => {
   		count += 1;
   		return count;
@@ -99,16 +97,12 @@ const gameController = ((playerOneName = 'Player One',
 
 	const getActivePlayer = () => activePlayer;
 
-	// const printNewRound = () => {
-	// 	board.printBoard();
-	// 	console.log(`${getActivePlayer().name}'s turn`)
-	// }
-
 	const playRound = (row, column) => {
 		const playedRow = row;
 		const playedColumn = column;
 
-		if (board.getBoard()[playedRow][playedColumn] === '') {
+		if (board.getBoard()[playedRow][playedColumn] === '' &&
+			winner === null) {
 			board.addMarker(playedRow, playedColumn);
 			board.roundCounter();
 		
@@ -126,8 +120,6 @@ const gameController = ((playerOneName = 'Player One',
 	}
 
 	const getWinner = () => winner;
-
-	// printNewRound();
 
 	return {
 		playRound,
