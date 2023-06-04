@@ -64,13 +64,22 @@ const gameBoard = (() => {
 
     const getRound = () => count;
 
+    const resetBoard = () => {
+    	for (let i = 0; i < rows; i++) {
+			for (let j = 0; j < columns; j++) {
+				board[i][j] = square.getValue();
+			}
+		};
+		count = 0;
+    }
+
 	return { 
 		getBoard,
 		addMarker,
 		checkBoard,
-		// printBoard,
 		roundCounter, 
-		getRound };
+		getRound,
+		resetBoard };
 })();
 
 const gameController = ((playerOneName = 'Player One', 
@@ -97,6 +106,8 @@ const gameController = ((playerOneName = 'Player One',
 
 	const getActivePlayer = () => activePlayer;
 
+	const resetActivePlayer = () => activePlayer = players[0];
+
 	const playRound = (row, column) => {
 		const playedRow = row;
 		const playedColumn = column;
@@ -112,8 +123,6 @@ const gameController = ((playerOneName = 'Player One',
 				winner = 'tie';
 			} else {
 				switchPlayerTurn();
-				// printNewRound();
-				// playRound();
 			}
 		}
 
@@ -121,10 +130,14 @@ const gameController = ((playerOneName = 'Player One',
 
 	const getWinner = () => winner;
 
+	const resetWinner = () => winner = null;
+
 	return {
 		playRound,
 		getActivePlayer,
-		getWinner
+		resetActivePlayer,
+		getWinner,
+		resetWinner
 	}
 })();
 
@@ -133,6 +146,7 @@ const displayController = (() => {
 	game = gameController;
 	const announcement = document.querySelector('.announcement');
 	const container = document.querySelector('.container');
+	const resetButton = document.querySelector('.reset');
 
 	const displayBoard = () => {
 		container.textContent = '';
@@ -176,6 +190,15 @@ const displayController = (() => {
 	}
 
 	container.addEventListener('click', clickHandler);
+
+	const resetClickHandler = (e) => {
+		gameBoard.resetBoard();
+		game.resetActivePlayer();
+		game.resetWinner();
+		displayBoard();
+	}
+
+	resetButton.addEventListener('click', resetClickHandler);
 
 	displayBoard();
 

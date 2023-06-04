@@ -48,3 +48,17 @@ body {
 	border-top: 3px solid #eba200;
 	border-bottom: 3px solid #eba200;	
 }
+
+.reset-container {
+	display: grid;
+	justify-items: end;
+}
+
+.reset {
+	background: #eba200;
+	font-size: 24px;
+	font-family: Helvetica, sans-serif;	
+	padding: 12px 24px;
+	border: none;
+	border-radius: 8px;
+}
