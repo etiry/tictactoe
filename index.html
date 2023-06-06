@@ -8,10 +8,33 @@
 	<script type="text/javascript" defer src="script.js"></script>
 </head>
 <body>
-	<div class="reset-container">
+	<div class="button-container">
+		<button class="start">Start</button>
 		<button class="reset">Reset</button>
 	</div>
 	<div class="announcement"></div>
 	<div class="container"></div>
+	<div class="player-names">
+    <div class="player-name-form">
+      <form action="#" class="form">
+        <div class="close-button">
+          <img src="assets/close.svg">
+        </div>
+        <div class="form-item">
+          <label for="player-1">Name of player X</label>
+          <span class="req">(required)</span>
+          <input type="text" id="player-1" name="player-1" required>
+        </div>
+        <div class="form-item">
+          <label for="player-2">Name of player O</label>
+          <span class="req">(required)</span>
+          <input type="text" id="player-2" name="player-2" required>
+        </div>
+        <div class="form-item">
+          <button type="submit" class="submit-button">Submit</button>
+        </div>
+    	</form>
+    </div>
+  </div>
 </body>
 </html>

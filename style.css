@@ -37,6 +37,7 @@ body {
 	color: #f2f7f9;
 	place-self: center;
 	margin: 24px;
+	height: 24px;
 }
 
 .center-column {
@@ -49,16 +50,89 @@ body {
 	border-bottom: 3px solid #eba200;	
 }
 
-.reset-container {
+.button-container {
 	display: grid;
-	justify-items: end;
+	grid-template-columns: repeat(2, 1fr);
+	justify-items: space-between;
 }
 
-.reset {
+.reset,
+.start {
 	background: #eba200;
 	font-size: 24px;
 	font-family: Helvetica, sans-serif;	
 	padding: 12px 24px;
 	border: none;
 	border-radius: 8px;
+	margin: 12px;
+}
+
+.player-names {
+  position: relative;
+  width: 100%;
+}
+
+.player-name-form {
+  display: none;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.form {
+  width: 300px;
+  padding: 24px;
+  background: #eba200;
+  color: #f2f7f9;
+  font-family: Helvetica, sans-serif;
+  font-size: 18px;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.close-button {
+  width: 24px;
+  margin-left: auto;
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.form-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1.5fr;
+  margin: 12px;
+}
+
+label {
+  color: #f2f7f9;
+  font-size: 16px;
+}
+
+.req {
+  grid-column: 2;
+  justify-self: right;
+  color: #f2f7f9;
+  font-size: 12px;
+}
+
+input {
+  grid-column: 1 / -1;
+  border: none;
+  border-radius: 8px;
+  background: #f2f7f9;
+  padding: 8px;
+  margin-bottom: 12px;
+}
+
+.submit-button {
+  grid-column: 1 / -1;
+  background: #003e49;
+  color: #f2f7f9;
+  font-family: Helvetica, serif;
+  font-size: 18px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
 }

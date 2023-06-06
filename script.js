@@ -82,23 +82,32 @@ const gameBoard = (() => {
 		resetBoard };
 })();
 
-const gameController = ((playerOneName = 'Player One', 
-						playerTwoName = 'Player Two') => {
+const gameController = (() => {
 	const board = gameBoard;
 
 	const players = [
 		{
-			name: playerOneName,
+			name: '',
 			token: 'X'
 		},
 		{
-			name: playerTwoName,
+			name: '',
 			token: 'O'
 		}];
 
 	let activePlayer = players[0];
 
 	let winner = null;
+
+	const addPlayerNames = (playerOne, playerTwo) => {
+		players[0].name = playerOne;
+		players[1].name = playerTwo;
+	}
+
+	const resetPlayerNames = () => {
+		players[0].name = '';
+		players[1].name = '';
+	}
 
 	const switchPlayerTurn = () => {
 		activePlayer = activePlayer === players[0] ? players[1] : players[0];
@@ -134,6 +143,8 @@ const gameController = ((playerOneName = 'Player One',
 
 	return {
 		playRound,
+		addPlayerNames,
+		resetPlayerNames,
 		getActivePlayer,
 		resetActivePlayer,
 		getWinner,
@@ -144,9 +155,13 @@ const gameController = ((playerOneName = 'Player One',
 const displayController = (() => {
 	board = gameBoard;
 	game = gameController;
+	gameStarted = false;
 	const announcement = document.querySelector('.announcement');
 	const container = document.querySelector('.container');
 	const resetButton = document.querySelector('.reset');
+	const startButton = document.querySelector('.start');
+	const submitButton = document.querySelector('.submit-button');
+	const closeButton = document.querySelector('.close-button');
 
 	const displayBoard = () => {
 		container.textContent = '';
@@ -154,12 +169,16 @@ const displayController = (() => {
 		const gameBoard = board.getBoard();
 		const activePlayer = game.getActivePlayer();
 
-		if (game.getWinner() === null) {
-			announcement.textContent = `${activePlayer.name}'s turn`;
-		} else if (game.getWinner() === 'tie') {
-			announcement.textContent = 'It\'s a tie!';
+		if (gameStarted === true) {
+			if (game.getWinner() === null) {
+				announcement.textContent = `${activePlayer.name}'s turn`;
+			} else if (game.getWinner() === 'tie') {
+				announcement.textContent = 'It\'s a tie!';
+			} else {
+				announcement.textContent = `${activePlayer.name} wins!`
+			}
 		} else {
-			announcement.textContent = `${activePlayer.name} wins!`
+			announcement.textContent = '';
 		}
 
 		gameBoard.forEach((row) => {
@@ -185,8 +204,10 @@ const displayController = (() => {
 		const selectedCol = e.target.dataset.column;
 		if (!selectedRow || !selectedCol) return;
 
-		game.playRound(selectedRow, selectedCol);
-		displayBoard();
+		if (gameStarted === true) {
+			game.playRound(selectedRow, selectedCol);
+			displayBoard();
+		};
 	}
 
 	container.addEventListener('click', clickHandler);
@@ -195,10 +216,40 @@ const displayController = (() => {
 		gameBoard.resetBoard();
 		game.resetActivePlayer();
 		game.resetWinner();
+		game.resetPlayerNames();
+		gameStarted = false;
 		displayBoard();
 	}
 
 	resetButton.addEventListener('click', resetClickHandler);
+
+	const openForm = () => {
+	  document.querySelector('.player-name-form').style.display = 'block';
+	}
+
+	const closeForm = () => {
+	  document.querySelector('.player-name-form').style.display = 'none';
+	}
+
+	const submitForm = (e) => {
+	  e.preventDefault();
+
+	  playerOne = document.querySelector('input[id=player-1]');
+	  playerTwo = document.querySelector('input[id=player-2]');
+
+	  game.addPlayerNames(playerOne.value, playerTwo.value);
+
+	  playerOne.value = '';
+	  playerTwo.value = '';
+	  gameStarted = true;
+
+	  closeForm();
+	  displayBoard();
+	}
+
+	startButton.addEventListener('click', openForm);
+	closeButton.addEventListener('click', closeForm);
+	submitButton.addEventListener('click', submitForm);
 
 	displayBoard();
 
